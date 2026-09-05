@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Local AI Assistant</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body data-personality="general">
+
+<div class="app">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <!-- BRAND -->
+        <div class="brand">
+
+            <div class="brand-icon">
+                🤖
+            </div>
+
+            <div>
+                <h1>Local AI</h1>
+                <span>Gemma Assistant</span>
+            </div>
+
+        </div>
+
+
+        <!-- NEW CHAT -->
+        <button
+            id="new-chat-button"
+            class="new-chat-button"
+            type="button"
+            onclick="createNewChat()"
+        >
+            <span>＋</span>
+            <span>New Chat</span>
+        </button>
+
+
+        <!-- =================================================
+             PERSONALITY
+        ================================================== -->
+
+        <section class="sidebar-section personality-section">
+
+            <div class="section-title">
+                PERSONALITY
+            </div>
+
+            <div class="personality-list">
+
+                <button
+                    type="button"
+                    class="personality-button active"
+                    data-personality="general"
+                    onclick="changePersonality('general')"
+                >
+                    <span class="personality-icon general-icon">
+                        ⚪
+                    </span>
+
+                    <span class="personality-info">
+                        <strong>General</strong>
+                        <small>Everyday assistant</small>
+                    </span>
+
+                    <span class="personality-check">
+                        ✓
+                    </span>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="personality-button"
+                    data-personality="saffron"
+                    onclick="changePersonality('saffron')"
+                >
+                    <span class="personality-icon saffron-icon">
+                        🟠
+                    </span>
+
+                    <span class="personality-info">
+                        <strong>Saffron</strong>
+                        <small>Tour guide</small>
+                    </span>
+
+                    <span class="personality-check">
+                        ✓
+                    </span>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="personality-button"
+                    data-personality="coder"
+                    onclick="changePersonality('coder')"
+                >
+                    <span class="personality-icon coder-icon">
+                        🔵
+                    </span>
+
+                    <span class="personality-info">
+                        <strong>Coder</strong>
+                        <small>Programming assistant</small>
+                    </span>
+
+                    <span class="personality-check">
+                        ✓
+                    </span>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="personality-button"
+                    data-personality="mentor"
+                    onclick="changePersonality('mentor')"
+                >
+                    <span class="personality-icon mentor-icon">
+                        🟢
+                    </span>
+
+                    <span class="personality-info">
+                        <strong>Mentor</strong>
+                        <small>Teaching assistant</small>
+                    </span>
+
+                    <span class="personality-check">
+                        ✓
+                    </span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHAT HISTORY
+        ================================================== -->
+
+        <section class="sidebar-section history-section">
+
+            <div class="section-title">
+                CHATS
+            </div>
+
+            <div
+                id="chat-list"
+                class="chat-list"
+            >
+                <!-- Chats inserted by script.js -->
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MEMORY SIDEBAR
+        ================================================== -->
+
+        <div class="sidebar-memory">
+
+            <button
+                id="memoryToggle"
+                class="memory-button"
+                type="button"
+            >
+                <span>🧠</span>
+                <span>Memory</span>
+                <span id="memoryArrow">⌄</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-info">
+
+                <div
+                    id="chat-title"
+                    class="chat-title-main"
+                >
+                    Local AI Assistant
+                </div>
+
+                <div class="model-status">
+
+                    <span class="status-dot"></span>
+
+                    <span>
+                        Gemma 3 · Local
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <button
+                    id="top-memory-button"
+                    class="icon-button"
+                    type="button"
+                    title="Memory"
+                >
+                    🧠
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             CHAT MESSAGES
+        ================================================== -->
+
+        <section
+            id="messages"
+            class="messages"
+        >
+
+            <div class="message bot welcome-message">
+
+                <div class="markdown-content">
+
+                    <h2>
+                        Hello 👋
+                    </h2>
+
+                    <p>
+                        I'm your local AI assistant.
+                    </p>
+
+                    <p>
+                        Ask me anything to get started.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             INPUT / COMPOSER
+        ================================================== -->
+
+        <footer class="input-area">
+
+            <div class="input-wrapper">
+
+                <textarea
+                    id="message-input"
+                    placeholder="Message your AI assistant..."
+                    rows="1"
+                    autocomplete="off"
+                    aria-label="Message"
+                ></textarea>
+
+
+                <button
+                    id="send-button"
+                    class="send-button"
+                    type="button"
+                    title="Send message"
+                    aria-label="Send message"
+                >
+                    ➤
+                </button>
+
+            </div>
+
+
+            <div class="input-hint">
+                
+            </div>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     MEMORY MODAL
+====================================================== -->
+
+<div
+    id="memory-modal"
+    class="modal"
+    aria-hidden="true"
+>
+    <div
+        class="modal-content memory-center"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="memory-modal-title"
+    >
+        <div class="modal-header">
+            <div>
+                <h2 id="memory-modal-title">🧠 Memory Center</h2>
+                <div id="memory-stats" class="memory-stats">
+                    Loading memory...
+                </div>
+            </div>
+
+            <button
+                class="modal-close"
+                type="button"
+                onclick="closeMemory()"
+                aria-label="Close memory"
+            >×</button>
+        </div>
+
+        <div class="memory-toolbar">
+            <button
+                type="button"
+                class="memory-tool-button"
+                onclick="loadMemory()"
+            >↻ Refresh</button>
+
+            <button
+                type="button"
+                class="memory-tool-button"
+                onclick="deduplicateMemory()"
+            >✨ Clean duplicates</button>
+
+            <button
+                type="button"
+                class="memory-tool-button danger"
+                onclick="clearAllMemory()"
+            >🧹 Clear all</button>
+        </div>
+
+        <div id="memory-list" class="memory-list">
+            <div class="empty-memory">No memories stored.</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     SCRIPTS
+====================================================== -->
+
+<script src="{{ url_for('static', filename='markdown.js') }}"></script>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
